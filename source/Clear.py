@@ -1,7 +1,7 @@
 def clearObj(filename):
-    print("Attempting to clear '"+filename+"'")
     filename = filename.lower()
     filepath="objects\\"+filename+".txt"
+    mergePlurals("objects\\"+filename)
     if os.path.isfile(filepath):
         file = open(filepath, "r")
         arr=file.read().split("\n")
@@ -25,4 +25,31 @@ def clearObjs():
     print("Clearing the Objects: "+str(tmp))
     for item in tmp:
         clearObj(item)
-    usedObjects=[]
+
+def mergePlurals(filename):
+    if os.path.isfile(filename[:-2]+".txt"):
+        print("trying to merge some files...")
+        mergeFiles(filename[:-2]+".txt", filename+".txt")
+        return True
+    else:
+        return False
+
+def mergeFiles(file1, file2):
+    try:
+        file = open(file1, "r")
+        tmp=file.read()
+        file.close()
+        file = open(file2, "r")
+        tmp+="\n"+file.read()
+        file.close()
+        file = open(file1, "w")
+        file.write(tmp)
+        file.close()
+        os.remove(file2)
+        print("merged files to '"+file1+"'.")
+        return True
+    except IOError:
+        print("either '"+file1+"' or '"+file2+"' was not found")
+        print("couldn't merge files.")
+        return False
+    

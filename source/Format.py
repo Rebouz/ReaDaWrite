@@ -12,21 +12,16 @@ def reformat(arr):
     i=-1
     for item in oldArrItems:
         i+=1
-        print("i "+str(i))
         try:
             newArrCounts[newArrItems2.index(item)] += int(oldArrCounts[i])
-            print(newArrCounts[newArrItems2.index(item)])
         except ValueError:
             newArrItems2.append(oldArrItems[i])
             newArrCounts.append(int(oldArrCounts[i]))
-            print("1st "+str(oldArrItems[i]))
 
-    print(newArrItems, newArrItems2, newArrCounts)
     newArr=[]
     i=-1
     for item in newArrItems2:
         i+=1
-        print("i "+str(i))
         newArr.append(str(newArrCounts[i])+"\t"+newArrItems2[i])
     return newArr
 
@@ -66,7 +61,36 @@ def killUnvaluables(words):
         elif not word[0].lower()==word[0]:
             print("passed word '"+word+"'")
             words2.append(word)            
-    return words2
+##    return blacklistFilter(pluralFilter(words2))
+    return pluralFilter(words2)
+
+def pluralFilter(arr):
+    for item in arr:
+        if item[-2:].lower()=="en":
+            if os.path.isfile("objects\\"+item[:-2].lower()+".txt"):
+                item=item[-2]
+    arr=clearDuplicates(arr)
+    return arr
+
+##def blacklistFilter(arr):
+##    arr2=[]
+##    if os.path.isfile("blacklist.txt"):
+##        file = open("blacklist.txt", "r")
+##        blacklist=file.read().split("\n")
+##        file.close()
+##        for item in arr:
+##            for item2 in blacklist:
+##                if not item==item2:
+##                    arr2.append(item)
+##                else:
+##                    print("found ~'"+item+"' on Blacklist, ignoring it")
+##    else:
+##        print("blacklist not found, proceeding without.")
+##        arr2=arr
+##    return arr2
+
+#function doesn't work, ignoring it in push
+                
 
 def addWordsToData(arr):
     for item in arr:

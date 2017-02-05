@@ -71,6 +71,7 @@ def firstStart():
     print("Print Object: 'printObj [obj]'")
     print("Delete Object: 'delObj [obj]'")
     print("Delete Attribute: 'delAttr [obj] <attribute>'")
+    print("Sets [obj] to default to <obj>")
     print("Set Object: 'setObj <obj>'")
     print("Automatically Filter new Data: 'addFromText'")
     print("List all Objects: 'listObjs'")

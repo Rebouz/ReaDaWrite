@@ -12,8 +12,8 @@ def getItemCount(item, lst):
 def itemExists(item, arr):
     for i in arr:
         if item==i:
-            return true
-    return false
+            return True
+    return False
 
 
 def delItemInList(item, arr):

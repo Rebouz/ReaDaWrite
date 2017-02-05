@@ -51,7 +51,10 @@ def main():
         dataFromSentences(x)
 
     elif inp[0]=="useTXT":
-        dataFromTXT()
+        if len(inp) == 2:
+            dataFromTXT(inp[1])
+        else:
+            dataFromTXT()
         
         
     clearObjs()

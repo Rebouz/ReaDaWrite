@@ -119,7 +119,7 @@ def dataFromSentences(text):
             print(item)
         addWordsToData(killUnvaluables(toWords(sentence)))
 
-def dataFromTXT():
-    file = open("input.txt", "r")
+def dataFromTXT(filename="input.txt"):
+    file = open(filename, "r")
     dataFromSentences(file.read())
     file.close()

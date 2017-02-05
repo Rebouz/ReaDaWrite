@@ -118,6 +118,10 @@ def mergePlurals(filename):
         print("trying to merge some files...")
         mergeFiles(filename[:-2]+".txt", filename+".txt")
         return True
+    elif os.path.isfile(filename[:-1]+".txt"):
+        print("trying to merge some files...")
+        mergeFiles(filename[:-1]+".txt", filename+".txt")
+        return True
     else:
         return False
 
@@ -172,7 +176,7 @@ def toWords(text):
     arr = text.split(" ")
     arr2 = []
     itemIndex=-1
-    specialChars=["+","-","*","/","(",")","[","]","{","}","?","!",".","_","~","#","'","\"","=","<",">","|","$","§","%","&","´","`","²","³","@",";",":","\n","\t","\v","\r","."]
+    specialChars=["+","-","*","/","(",")","[","]","{","}","?","!","_","~","#","'","\"","=","<",">","|","$","§","%","&","´","`","²","³","@",";",":","\n","\t","\v","\r",".",","]
     string=""
     for item in arr:
         itemIndex=itemIndex+1
@@ -211,7 +215,9 @@ def pluralFilter(arr):
     for item in arr:
         if item[-2:].lower()=="en":
             if os.path.isfile("objects\\"+item[:-2].lower()+".txt"):
-                item=item[-2]
+                item=item[:-2]
+            elif os.path.isfile("objects\\"+item[:-1].lower()+".txt"):
+                item=item[:-1]
     arr=clearDuplicates(arr)
     return arr
 
@@ -260,8 +266,8 @@ def dataFromSentences(text):
             print(item)
         addWordsToData(killUnvaluables(toWords(sentence)))
 
-def dataFromTXT():
-    file = open("input.txt", "r")
+def dataFromTXT(filename="input.txt"):
+    file = open(filename, "r")
     dataFromSentences(file.read())
     file.close()
 
@@ -365,13 +371,19 @@ def main():
         dataFromSentences(x)
 
     elif inp[0]=="useTXT":
-        dataFromTXT()
+        if len(inp) == 2:
+            dataFromTXT(inp[1])
+        else:
+            dataFromTXT()
         
         
     clearObjs()
     main()
 
 def firstStart():
+    if not os.path.exists("objects\\"):
+        os.makedirs("objects\\")
+    
     print("Create Object: 'createObj [obj]'")
     print("Add Adjective: 'addAdj [obj] <attribute>'")
     print("Add Relation: 'addRelation [obj1] <obj2>'")

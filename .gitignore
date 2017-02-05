@@ -218,5 +218,5 @@ pip-log.txt
 #Custom
 __pychache__/
 objects/
-input.txt
+input*.txt
 blacklist.txt

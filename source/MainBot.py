@@ -51,19 +51,27 @@ def main():
         dataFromSentences(x)
 
     elif inp[0]=="useTXT":
-        dataFromTXT()
-        
+        if len(inp) == 2:
+            dataFromTXT(inp[1])
+        else:
+            dataFromTXT()
+    elif inp[0] == "exit":
+        sys.exit()
         
     clearObjs()
     main()
 
 def firstStart():
+    if not os.path.exists("objects\\"):
+        os.makedirs("objects\\")
+    
     print("Create Object: 'createObj [obj]'")
     print("Add Adjective: 'addAdj [obj] <attribute>'")
     print("Add Relation: 'addRelation [obj1] <obj2>'")
     print("Print Object: 'printObj [obj]'")
     print("Delete Object: 'delObj [obj]'")
     print("Delete Attribute: 'delAttr [obj] <attribute>'")
+    print("Sets [obj] to default to <obj>")
     print("Set Object: 'setObj <obj>'")
     print("Automatically Filter new Data: 'addFromText'")
     print("List all Objects: 'listObjs'")

@@ -118,6 +118,10 @@ def mergePlurals(filename):
         print("trying to merge some files...")
         mergeFiles(filename[:-2]+".txt", filename+".txt")
         return True
+    elif os.path.isfile(filename[:-1]+".txt"):
+        print("trying to merge some files...")
+        mergeFiles(filename[:-1]+".txt", filename+".txt")
+        return True
     else:
         return False
 
@@ -172,7 +176,7 @@ def toWords(text):
     arr = text.split(" ")
     arr2 = []
     itemIndex=-1
-    specialChars=["+","-","*","/","(",")","[","]","{","}","?","!",".","_","~","#","'","\"","=","<",">","|","$","§","%","&","´","`","²","³","@",";",":","\n","\t","\v","\r","."]
+    specialChars=["+","-","*","/","(",")","[","]","{","}","?","!","_","~","#","'","\"","=","<",">","|","$","§","%","&","´","`","²","³","@",";",":","\n","\t","\v","\r",".",","]
     string=""
     for item in arr:
         itemIndex=itemIndex+1
@@ -204,36 +208,43 @@ def killUnvaluables(words):
         elif not word[0].lower()==word[0]:
             print("passed word '"+word+"'")
             words2.append(word)            
-##    return blacklistFilter(pluralFilter(words2))
-    return pluralFilter(words2)
+    return blacklistFilter(pluralFilter(words2))
+#    return pluralFilter(words2)
 
 def pluralFilter(arr):
     for item in arr:
         if item[-2:].lower()=="en":
             if os.path.isfile("objects\\"+item[:-2].lower()+".txt"):
-                item=item[-2]
+                item=item[:-2]
+            elif os.path.isfile("objects\\"+item[:-1].lower()+".txt"):
+                item=item[:-1]
     arr=clearDuplicates(arr)
     return arr
 
-##def blacklistFilter(arr):
-##    arr2=[]
-##    if os.path.isfile("blacklist.txt"):
-##        file = open("blacklist.txt", "r")
-##        blacklist=file.read().split("\n")
-##        file.close()
-##        for item in arr:
-##            for item2 in blacklist:
-##                if not item==item2:
-##                    arr2.append(item)
-##                else:
-##                    print("found ~'"+item+"' on Blacklist, ignoring it")
-##    else:
-##        print("blacklist not found, proceeding without.")
-##        arr2=arr
-##    return arr2
-
-#function doesn't work, ignoring it in push
-                
+def blacklistFilter(arr):
+    arr2=[]
+    if os.path.isfile("blacklist.txt"):
+        file = open("blacklist.txt", "r")
+        blacklist=file.read().split("\n")
+        file.close()
+        if blacklist == []:
+            print("blacklist empty, proceeding without.")
+            arr2 = arr
+        else:
+            for item in arr:
+                doesexist = itemExists(item.lower(), blacklist)
+                if not doesexist:
+                    arr2.append(item)
+                else:
+                    print("found ~'"+item+"' in Blacklist, ignoring it")
+    else:
+        print("blacklist not found, creating it, proceeding without.")
+        file = open("blacklist.txt", "w+")
+        file.write("")
+        file.close()
+        print("successfully created blacklist")
+        arr2=arr
+    return arr2
 
 def addWordsToData(arr):
     for item in arr:
@@ -243,7 +254,6 @@ def addWordsToData(arr):
             item2 = item2.lower()
             if not item==item2:
                 addAttr(item,"1",item2)
-
 
 def getSentencesFromText(text):
     arr=[]
@@ -260,8 +270,8 @@ def dataFromSentences(text):
             print(item)
         addWordsToData(killUnvaluables(toWords(sentence)))
 
-def dataFromTXT():
-    file = open("input.txt", "r")
+def dataFromTXT(filename="input.txt"):
+    file = open(filename, "r")
     dataFromSentences(file.read())
     file.close()
 
@@ -279,8 +289,8 @@ def getItemCount(item, lst):
 def itemExists(item, arr):
     for i in arr:
         if item==i:
-            return true
-    return false
+            return True
+    return False
 
 
 def delItemInList(item, arr):
@@ -365,19 +375,27 @@ def main():
         dataFromSentences(x)
 
     elif inp[0]=="useTXT":
-        dataFromTXT()
-        
+        if len(inp) == 2:
+            dataFromTXT(inp[1])
+        else:
+            dataFromTXT()
+    elif inp[0] == "exit":
+        sys.exit()
         
     clearObjs()
     main()
 
 def firstStart():
+    if not os.path.exists("objects\\"):
+        os.makedirs("objects\\")
+    
     print("Create Object: 'createObj [obj]'")
     print("Add Adjective: 'addAdj [obj] <attribute>'")
     print("Add Relation: 'addRelation [obj1] <obj2>'")
     print("Print Object: 'printObj [obj]'")
     print("Delete Object: 'delObj [obj]'")
     print("Delete Attribute: 'delAttr [obj] <attribute>'")
+    print("Sets [obj] to default to <obj>")
     print("Set Object: 'setObj <obj>'")
     print("Automatically Filter new Data: 'addFromText'")
     print("List all Objects: 'listObjs'")

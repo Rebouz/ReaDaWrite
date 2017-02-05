@@ -31,6 +31,10 @@ def mergePlurals(filename):
         print("trying to merge some files...")
         mergeFiles(filename[:-2]+".txt", filename+".txt")
         return True
+    elif os.path.isfile(filename[:-1]+".txt"):
+        print("trying to merge some files...")
+        mergeFiles(filename[:-1]+".txt", filename+".txt")
+        return True
     else:
         return False
 

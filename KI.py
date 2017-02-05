@@ -208,8 +208,8 @@ def killUnvaluables(words):
         elif not word[0].lower()==word[0]:
             print("passed word '"+word+"'")
             words2.append(word)            
-##    return blacklistFilter(pluralFilter(words2))
-    return pluralFilter(words2)
+    return blacklistFilter(pluralFilter(words2))
+#    return pluralFilter(words2)
 
 def pluralFilter(arr):
     for item in arr:
@@ -221,25 +221,30 @@ def pluralFilter(arr):
     arr=clearDuplicates(arr)
     return arr
 
-#def blacklistFilter(arr):
-#    arr2=[]
-#    if os.path.isfile("blacklist.txt"):
-#        file = open("blacklist.txt", "r")
-#        blacklist=file.read().split("\n")
-#        file.close()
-#        for item in arr:
-#            for item2 in blacklist:
-#                if not item==item2:
-#                    arr2.append(item)
-#                else:
-#                    print("found ~'"+item+"' on Blacklist, ignoring it")
-#    else:
-#        print("blacklist not found, proceeding without.")
-#        arr2=arr
-#    return arr2
-
-#function doesn't work, ignoring it in push
-                
+def blacklistFilter(arr):
+    arr2=[]
+    if os.path.isfile("blacklist.txt"):
+        file = open("blacklist.txt", "r")
+        blacklist=file.read().split("\n")
+        file.close()
+        if blacklist == []:
+            print("blacklist empty, proceeding without.")
+            arr2 = arr
+        else:
+            for item in arr:
+                doesexist = itemExists(item.lower(), blacklist)
+                if not doesexist:
+                    arr2.append(item)
+                else:
+                    print("found ~'"+item+"' in Blacklist, ignoring it")
+    else:
+        print("blacklist not found, creating it, proceeding without.")
+        file = open("blacklist.txt", "w+")
+        file.write("")
+        file.close()
+        print("successfully created blacklist")
+        arr2=arr
+    return arr2
 
 def addWordsToData(arr):
     for item in arr:
@@ -249,7 +254,6 @@ def addWordsToData(arr):
             item2 = item2.lower()
             if not item==item2:
                 addAttr(item,"1",item2)
-
 
 def getSentencesFromText(text):
     arr=[]
@@ -285,8 +289,8 @@ def getItemCount(item, lst):
 def itemExists(item, arr):
     for i in arr:
         if item==i:
-            return true
-    return false
+            return True
+    return False
 
 
 def delItemInList(item, arr):
@@ -391,6 +395,7 @@ def firstStart():
     print("Print Object: 'printObj [obj]'")
     print("Delete Object: 'delObj [obj]'")
     print("Delete Attribute: 'delAttr [obj] <attribute>'")
+    print("Sets [obj] to default to <obj>")
     print("Set Object: 'setObj <obj>'")
     print("Automatically Filter new Data: 'addFromText'")
     print("List all Objects: 'listObjs'")

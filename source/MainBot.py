@@ -58,6 +58,9 @@ def main():
     main()
 
 def firstStart():
+    if not os.path.exists("objects\\"):
+        os.makedirs("objects\\")
+    
     print("Create Object: 'createObj [obj]'")
     print("Add Adjective: 'addAdj [obj] <attribute>'")
     print("Add Relation: 'addRelation [obj1] <obj2>'")

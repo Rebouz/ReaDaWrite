@@ -29,7 +29,7 @@ def toWords(text):
     arr = text.split(" ")
     arr2 = []
     itemIndex=-1
-    specialChars=["+","-","*","/","(",")","[","]","{","}","?","!",".","_","~","#","'","\"","=","<",">","|","$","§","%","&","´","`","²","³","@",";",":","\n","\t","\v","\r","."]
+    specialChars=["+","-","*","/","(",")","[","]","{","}","?","!","_","~","#","'","\"","=","<",">","|","$","§","%","&","´","`","²","³","@",";",":","\n","\t","\v","\r",".",","]
     string=""
     for item in arr:
         itemIndex=itemIndex+1
@@ -68,7 +68,9 @@ def pluralFilter(arr):
     for item in arr:
         if item[-2:].lower()=="en":
             if os.path.isfile("objects\\"+item[:-2].lower()+".txt"):
-                item=item[-2]
+                item=item[:-2]
+            elif os.path.isfile("objects\\"+item[:-1].lower()+".txt"):
+                item=item[:-1]
     arr=clearDuplicates(arr)
     return arr
 

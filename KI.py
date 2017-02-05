@@ -221,22 +221,22 @@ def pluralFilter(arr):
     arr=clearDuplicates(arr)
     return arr
 
-##def blacklistFilter(arr):
-##    arr2=[]
-##    if os.path.isfile("blacklist.txt"):
-##        file = open("blacklist.txt", "r")
-##        blacklist=file.read().split("\n")
-##        file.close()
-##        for item in arr:
-##            for item2 in blacklist:
-##                if not item==item2:
-##                    arr2.append(item)
-##                else:
-##                    print("found ~'"+item+"' on Blacklist, ignoring it")
-##    else:
-##        print("blacklist not found, proceeding without.")
-##        arr2=arr
-##    return arr2
+#def blacklistFilter(arr):
+#    arr2=[]
+#    if os.path.isfile("blacklist.txt"):
+#        file = open("blacklist.txt", "r")
+#        blacklist=file.read().split("\n")
+#        file.close()
+#        for item in arr:
+#            for item2 in blacklist:
+#                if not item==item2:
+#                    arr2.append(item)
+#                else:
+#                    print("found ~'"+item+"' on Blacklist, ignoring it")
+#    else:
+#        print("blacklist not found, proceeding without.")
+#        arr2=arr
+#    return arr2
 
 #function doesn't work, ignoring it in push
                 
@@ -375,7 +375,8 @@ def main():
             dataFromTXT(inp[1])
         else:
             dataFromTXT()
-        
+    elif inp[0] == "exit":
+        sys.exit()
         
     clearObjs()
     main()

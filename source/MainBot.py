@@ -55,7 +55,8 @@ def main():
             dataFromTXT(inp[1])
         else:
             dataFromTXT()
-        
+    elif inp[0] == "exit":
+        sys.exit()
         
     clearObjs()
     main()
